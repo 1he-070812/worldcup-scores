@@ -9,9 +9,17 @@ import os
 import re
 import smtplib
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timezone, date
 from email.mime.text import MIMEText
 from email.header import Header
+# ── 世界杯自动过期（2026-07-19 决赛日）──
+WORLD_CUP_END = date(2026, 7, 19)
+
+today_utc = datetime.now(timezone.utc).date()
+if today_utc > WORLD_CUP_END:
+    print("🏁 2026 世界杯已于 7月19日 结束，脚本自动关闭。")
+    sys.exit(0)
+
 
 import requests
 from bs4 import BeautifulSoup
