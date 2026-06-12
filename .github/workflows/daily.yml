@@ -1,0 +1,24 @@
+name: ⚽ 每日世界杯比分推送
+
+on:
+  schedule:
+    - cron: "0 2 * * *"
+  workflow_dispatch:
+
+jobs:
+  fetch-and-send:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: 🐍 设置 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: 📦 安装依赖
+        run: pip install -r requirements.txt
+      - name: 📡 抓取比分并发送邮件
+        env:
+          QQ_SMTP_USER: ${{ secrets.QQ_SMTP_USER }}
+          QQ_SMTP_PASS: ${{ secrets.QQ_SMTP_PASS }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+        run: python worldcup_daily.py
